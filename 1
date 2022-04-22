@@ -1,0 +1,241 @@
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+using namespace std; class grade {private: char name[32];//学生姓名
+char xuehao[32];//学生学号
+char banji[20];//学生班级
+char zye[20];//学生专业
+int s1;//数学成绩
+int s2;//英语成绩
+public:grade(char *name,char *xuehao,char *banji,char *zye,int s1,int s2)
+{
+strcpy(this->name,name); strcpy(this->xuehao,xuehao); strcpy(this->banji,banji); strcpy(this->zye,zye);
+this->s1=s1;
+this->s2=s2; }grade(){} grade *next; char * getname()
+{
+return name; }
+char * getxuehao()
+{
+return xuehao; }
+char * getbanji()
+{
+return banji; }
+char * getzye()
+{
+eturn zye; }
+int gets1()
+{
+return s1; }
+int gets2()
+{
+return s2; }void setname(char *a)
+{
+strcpy(name,a); }void setxuehao(char *a)
+{
+strcpy(xuehao,a); }void setbanji(char *a)
+{
+strcpy(banji,a); }void setzye(char *a)
+{
+strcpy(zye,a); }void sets1(int a)
+{
+s1=a; }void sets2(int a)
+{
+s2=a; }
+}; class function:public grade {public:grade *create();//学生信息导入
+void add(grade *head);//增加学生信息
+void del(grade *head);//删除学生信息
+void change(grade *head);//修改学生信息
+void lookup(grade *head);//查找学生信息
+void showall(grade *head);//显示学生信息
+void max1(grade *head);//数学最高分
+void max2(grade *head);//英语最高分
+void min1(grade *head);//数学最低分
+void min2(grade *head);//英语最低分
+void pj1(grade *head);//数学平均分
+void pj2(grade *head);//英语平均分
+}; grade * function::create()//学生信息导入
+{ grade *head,*p,*q; char b[20],c[20],d[20],e[20];
+int f,h; head=(grade *)malloc(sizeof(grade));
+if(head==NULL)
+return NULL; 
+head->next=NULL;
+ q=head;
+ printf("输入学生信息(英语成绩小于 0 停止输入)\n");
+ while(1)
+{
+cin>>b>>c>>d>>e>>f>>h;
+if(h<0) break; p=new grade(b,c,d,e,f,h); p->next=NULL; q->next=p; q=p; }
+return head; }void function::add(grade *head)//增加学生信息
+{ grade *w=head; char b[20],c[20],d[20],e[20];
+int a,f,h; 
+while(w->next!=NULL) 
+w=w->next;
+ grade *head2,*p,*q; 
+head2=(grade *)malloc(sizeof(grade));
+ head2->next=NULL;
+ q=head2; 
+printf("输入学生信息\n"); cin>>b>>c>>d>>e>>f>>h;
+p=new grade(b,c,d,e,f,h); 
+p->next=NULL;
+ q->next=p;
+ q=p; w->next=head2->next; 
+free(head2);
+ printf("添加成功!\n");
+ }
+void function::del(grade *head)//删除学生信息
+{ grade *p1,*p2;
+int flag=0;
+ p1=head->next;
+ p2=head; 
+char delname[32];
+ cout<<"请输入要删除的学生姓名或学生学号： "; 
+cin>>delname; 
+while(p1!=NULL)
+{
+if(strcmp(p1->getname(),delname)==0||strcmp(p1->getxuehao(),delname)==0)
+{ p2->next=p1->next; 
+p1=p1->next; 
+flag++; }
+else { p1=p1->next;
+ p2=p2->next; }
+}
+if(flag==0)printf("删除失败！\n"); 
+else printf("删除成功！\n"); 
+}
+void function::change(grade *head)//修改商品属性
+{
+char changename[32];
+int n; grade *p=head->next;
+ printf("输入即将更改的学生姓名或学号： \n");
+ cin>>changename;
+for(;p!=NULL;)
+{
+if(strcmp(changename,p->getname())==0||strcmp(changename,p->getxuehao())==0) 
+while(1)
+{ printf("输入即将更改的属性代码(1 退出修改 2 学生姓名 3 学生学号 4 学生班级 5 学生专业 6 数学成绩 7 英语成绩):\n"); cin>>n;
+if(n==1) break; printf("输入更改的信息： \n");
+ switch(n)
+{
+case 2:char changename[20];cin>>changename;p->setname(changename);printf("修改成功!\n");break; 
+case 3:char changexuehao[20];cin>>changexuehao;p->setxuehao(changexuehao);break; 
+case 4:char changebanji[20];cin>>changebanji;p->setbanji(changebanji);printf("修改成功!\n");break;
+ case 5:char changezye[20];cin>>changezye;p->setzye(changezye);printf("修改成功!\n");break; 
+case 6:int changes1;cin>>changes1;p->sets1(changes1);printf("修改成功!\n");break; 
+case 7:int changes2;cin>>changes2;p->sets2(changes2);printf("修改成功!\n");break; }
+} p=p->next; }
+}void function::lookup(grade *head)//查找学生信息
+{
+char m[20];
+int flag=0; grade *p=head->next; 
+printf("输入学生姓名或学号： "); 
+cin>>m; for(;p!=NULL;)
+{
+if(strcmp(m,p->getname())==0||strcmp(m,p->getxuehao())==0)
+{
+flag++; 
+printf("学生姓名 学号 班级 专业 数学-2(数学课程编号) 英语-3(英语课程编号)\n"); 
+cout<<" "<<p->getname()<<" "<<p->getxuehao()<<" "<<p->getbanji()<<" "<<p->getzye()<<" "<<p->gets1()<<"
+"<<p->gets2()<<endl;
+}
+p=p->next; }
+if(flag==0) 
+printf("查找失败\n"); 
+flag=0
+free(p); }
+void function::showall(grade *head)//显示学生信息
+{
+system("cls"); grade *p=head->next; printf("学生姓名 学号 班级 专业 数学-2(数学课程编号) 英语-3(英语课程编号)\n"); 
+while(p!=NULL)
+{
+cout<<" "<<p->getname()<<" "<<p->getxuehao()<<" "<<p->getbanji()<<" "<<p->getzye()<<" "<<p->gets1()<<" "<<p->gets2()<<endl; 
+p=p->next; }
+}void function::max1(grade *head)
+{ grade *p=head->next;
+int m=0; 
+while(p!=NULL)
+{
+if(p->gets1()>m) 
+m=p->gets1();
+ p=p->next; }
+cout<<"数学最高分："<<m;
+ }
+void function::max2(grade *head)
+{ grade *p=head->next;
+int m=0;
+ while(p!=NULL)
+{
+if(p->gets2()>m) 
+m=p->gets1(); 
+p=p->next; }
+cout<<" 英语最高分："<<m<<endl;
+ }void function::min1(grade *head)
+{ grade *p=head->next;
+int m=100; 
+while(p!=NULL)
+{
+if(p->gets1()<m) m=p->gets1();
+ p=p->next; }
+cout<<"数学最低分："<<m; }
+void function::min2(grade *head)
+{ grade *p=head->next;
+int m=100; 
+while(p!=NULL)
+{
+if(p->gets2()<m) 
+m=p->gets2();
+ p=p->next; }
+cout<<" 英语最低分："<<m<<endl; }
+void function::pj1(grade *head)
+{ grade *p=head->next;
+int m=0,i=0;
+ float a;
+ while(p!=NULL)
+{ m=m+p->gets1();
+i++; 
+p=p->next; }
+a=(float) (m*100/i)/100; 
+printf("数学平均分：%.2f ",a);
+ }
+void function::pj2(grade *head)
+{ grade *p=head->next;
+int m=0,i=0; 
+float a; 
+while(p!=NULL)
+{
+m=m+p->gets2();
+i++; p=p->next; }
+a=(float) (m*100/i)/100; printf("英语平均分：%.2f\n",a); }
+int main()
+{
+int n; function t1; grade *head=t1.create();
+ A: printf("-----------------------------------------------------------------------------------------------\n");
+ printf("输入执行功能编号:\n"); printf("1.增加学生信息 2.删除学生信息 3.修改学生信息 4.查找学生信息 5.显示学生信息"); printf("\n"); cin>>n;
+if(n==1)
+{
+t1.add(head);
+ goto A; }
+else if(n==2)
+{
+t1.del(head); 
+goto A; }
+else if(n==3)
+{
+t1.change(head);
+ goto A; }
+else if(n==4)
+{
+t1.lookup(head); 
+goto A; }
+else if(n==5)
+{
+t1.showall(head);
+t1.max1(head);
+t1.max2(head);
+t1.min1(head);
+t1.min2(head)
+1.pj1(head);
+t1.pj2(head); 
+goto A; }
+system("pause"); 
+return 0; }
